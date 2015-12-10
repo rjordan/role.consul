@@ -9,8 +9,8 @@
     "{{server}}"
     {% endfor %}
   ],
-  "server": {{consul_server}},
+  "server": {{consul_server | to_json }},
   "client_addr": "0.0.0.0",
-  "advertise_addr": "{{consul_advertise | ipaddr }}"
+  "advertise_addr": "{{consul_advertise }}"
 }
 

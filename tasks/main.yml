@@ -1,0 +1,35 @@
+---
+# - name: Rm Consul Zip
+# command: rm /tmp/consul.zip removes=/tmp/consul.zip
+
+#https://releases.hashicorp.com/consul/0.6.0/consul_0.6.0_linux_amd64.zip
+ - name: Download Consul x64
+ get_url: url=https://releases.hashicorp.com/consul/{{consul_version}}/consul_{{consul_version}}_linux_amd64.zip dest=/tmp/consul.zip
+ when: ansible_architecture == "x86_64"
+
+ - name: Download Consul x32
+ get_url: url=https://releases.hashicorp.com/consul/{{consul_version}}/consul_{{consul_version}}_linux_386.zip dest=/tmp/consul.zip
+ when: ansible_architecture == "i386"
+
+ - name: Download Unzip
+ apt: name=unzip state=latest
+
+ - name: unzip consul
+ command: unzip /tmp/consul.zip -d /tmp creates=/tmp/consul
+
+ - name: opt consul
+ command: mv /tmp/consul /usr/bin/consul creates=/usr/bin/consul
+
+ - name: etc consul.d
+ command: mkdir /etc/consul.d creates=/etc/consul.d
+
+ - name: log consul
+ command: mkdir /var/log/consul creates=/var/log/consul
+
+ - name: data consul
+ command: mkdir /var/consul creates=/var/consul
+
+ - name: consul config
+ template: src=consul_config.j2 dest=/etc/consul.d/consul.conf
+ 
+

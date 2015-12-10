@@ -1,0 +1,16 @@
+{
+  "datacenter": "{{consul_datacenter}}",
+  "data_dir": "/var/consul",
+  "log_level": "INFO",
+  "enable_syslog": true,
+  "rejoin_after_leave": true,
+  "retry_join": [
+    {% for server in consul_autojoin_servers %}
+    "{{server}}"
+    {% endfor %}
+  ],
+  "server": {{consul_server}},
+  "client_addr": "0.0.0.0",
+  "advertise_addr": "{{consul_advertise | ipaddr }}"
+}
+

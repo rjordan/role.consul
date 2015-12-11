@@ -71,3 +71,11 @@
     - restart consul
    when: systemd.stat.exists == true
  
+ - name: consul startup (upstart)
+   template: 
+     src=startup_upstart.j2 
+     dest=/etc/init/consul.conf
+   notify:
+    - restart consul
+   when: systemd.stat.exists != true
+ 
